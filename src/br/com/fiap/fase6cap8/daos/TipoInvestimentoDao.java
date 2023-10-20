@@ -57,9 +57,9 @@ public class TipoInvestimentoDao implements ICrudDao<TipoInvestimento> {
 		
 		String sql = "";
 		if(t.getId() != null && t.getId() > 0) {
-			sql = "UPDATE T_TIPO_LANCAMENTO SET ds_tipo_investimento = ?, vl_rendimento_mensal = ?, prazo_minimo_investimento = ? WHERE cd_tipo_investimento = ?";
+			sql = "UPDATE T_TIPO_INVESTIMENTO SET ds_tipo_investimento = ?, vl_rendimento_mensal = ?, prazo_minimo_investimento = ? WHERE cd_tipo_investimento = ?";
 		} else {
-			sql = "INSERT INTO T_TIPO_LANCAMENTO (ds_tipo_investimento, vl_rendimento_mensal, prazo_minimo_investimento, cd_tipo_investimento) VALUES (?, ?, ?, SEQ_TIPO_LANCAMENTO.NEXTVAL)";
+			sql = "INSERT INTO T_TIPO_INVESTIMENTO (ds_tipo_investimento, vl_rendimento_mensal, prazo_minimo_investimento, cd_tipo_investimento) VALUES (?, ?, ?, SEQ_TIPO_INVESTIMENTO.NEXTVAL)";
 		}
 		try(PreparedStatement stmt = getConnection().prepareStatement(sql)) {
 			stmt.setString(1, t.getDsTipoInvestimento());
@@ -77,7 +77,7 @@ public class TipoInvestimentoDao implements ICrudDao<TipoInvestimento> {
 
 	@Override
 	public void delete(Long id) {
-		try(PreparedStatement stmt = getConnection().prepareStatement("DELETE FROM T_TIPO_LANCAMENTO WHERE cd_conta = ?")) {
+		try(PreparedStatement stmt = getConnection().prepareStatement("DELETE FROM T_TIPO_INVESTIMENTO WHERE cd_conta = ?")) {
 			stmt.setLong(0, id);
 			stmt.executeQuery();
 			stmt.executeUpdate();

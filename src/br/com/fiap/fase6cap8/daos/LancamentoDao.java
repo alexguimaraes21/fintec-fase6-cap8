@@ -60,10 +60,20 @@ public class LancamentoDao implements ICrudDao<Lancamento> {
 		String sql = "";
 		if(t.getId() != null && t.getId() > 0) {
 			sql = "UPDATE T_LANCAMENTO SET vl_lancamento = ?, dt_lancamento = ?, ds_lancamento = ?, cd_tipo = ?, "
-					+ "cd_usuario = ?, cd_conta = ?, cd_tipo_investimento = ? WHERE cd_lancamento = ?";
+//					+ "cd_usuario = ?, cd_conta = ? WHERE cd_lancamento = ?";
+					+ "cd_conta = ? WHERE cd_lancamento = ?";
+		} else if ((t.getId() != null && t.getId() > 0) && (t.getTipoLancamento().getId() == 3)) {
+			sql = "UPDATE T_LANCAMENTO SET vl_lancamento = ?, dt_lancamento = ?, ds_lancamento = ?, cd_tipo = ?, "
+//					+ "cd_usuario = ?, cd_conta = ?, cd_tipo_investimento = ? WHERE cd_lancamento = ?";
+					+ "cd_conta = ?, cd_tipo_investimento = ? WHERE cd_lancamento = ?";
+		} else if (t.getTipoLancamento().getId() == 3) {
+			sql = "INSERT INTO T_LANCAMENTO (vl_lancamento, dt_lancamento, ds_lancamento, cd_tipo, "
+//					+ " cd_usuario, cd_conta, cd_tipo_investimento, cd_lancamento) VALUES (?, ?, ?, ?, ?, ?, ?, SEQ_LANCAMENTO.NEXTVAL)";
+					+ "cd_conta, cd_tipo_investimento, cd_lancamento) VALUES (?, ?, ?, ?, ?, ?, SEQ_LANCAMENTO.NEXTVAL)";
 		} else {
 			sql = "INSERT INTO T_LANCAMENTO (vl_lancamento, dt_lancamento, ds_lancamento, cd_tipo, "
-					+ " cd_usuario, cd_conta, cd_tipo_investimento, cd_lancamento) VALUES (?, ?, ?, ?, ?, ?, ?, SEQ_LANCAMENTO.NEXTVAL)";
+//					+ " cd_usuario, cd_conta, cd_lancamento) VALUES (?, ?, ?, ?, ?, ?, SEQ_LANCAMENTO.NEXTVAL)";
+					+ "cd_conta, cd_lancamento) VALUES (?, ?, ?, ?, ?, SEQ_LANCAMENTO.NEXTVAL)";
 		}
 		try(PreparedStatement stmt = getConnection().prepareStatement(sql)) {
 			stmt.setDouble(1, t.getVlLancamento());
@@ -71,15 +81,17 @@ public class LancamentoDao implements ICrudDao<Lancamento> {
 			stmt.setDate(2, dataLancamento);
 			stmt.setString(3, t.getDsLancamento());
 			stmt.setLong(4, t.getTipoLancamento().getId());
-			stmt.setLong(5, t.getUsuario().getId());
-			stmt.setLong(6, t.getConta().getId());
-			stmt.setLong(7, t.getTipoIvestimento().getId());
+//			stmt.setLong(4, t.getUsuario().getId());
+			stmt.setLong(5, t.getConta().getId());
+			if(t.getTipoLancamento().getId() == 3) {
+				stmt.setLong(6, t.getTipoIvestimento().getId());
+			}
 			if(t.getId() != null && t.getId() > 0) {
-				stmt.setLong(8, t.getId());
+				stmt.setLong(7, t.getId());
 			} 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("Erro ao salvar ou atualizar a conta. Erro [ " + e.getMessage() + " ].");
+			System.out.println("Erro ao salvar ou atualizar um lançamento. Erro [ " + e.getMessage() + " ].");
 			System.out.println("Trace do erro [ " + e.getStackTrace().toString() + " ].");
 		}
 	}
@@ -97,7 +109,7 @@ public class LancamentoDao implements ICrudDao<Lancamento> {
 	}
 	
 	private static Lancamento criarLancamento(ResultSet rs) throws SQLException {
-		UsuarioDao usuarioDao = new UsuarioDao();
+//		UsuarioDao usuarioDao = new UsuarioDao();
 		ContaDao contaDao = new ContaDao();
 		TipoLancamentoDao tipoLancamentoDao = new TipoLancamentoDao();
 		TipoInvestimentoDao tipoInvestimentoDao = new TipoInvestimentoDao();
@@ -108,7 +120,7 @@ public class LancamentoDao implements ICrudDao<Lancamento> {
 		lancamento.setDsLancamento(rs.getString("ds_lancamento"));
 		lancamento.setTipoLancamento(tipoLancamentoDao.getById(rs.getLong("cd_tipo")));
 		lancamento.setTipoIvestimento(tipoInvestimentoDao.getById(rs.getLong("cd_tipo_investimento")));
-		lancamento.setUsuario(usuarioDao.getById(rs.getLong("cd_usuario")));
+//		lancamento.setUsuario(usuarioDao.getById(rs.getLong("cd_usuario")));
 		lancamento.setConta(contaDao.getById(rs.getLong("cd_conta")));
 		return lancamento;
 	}

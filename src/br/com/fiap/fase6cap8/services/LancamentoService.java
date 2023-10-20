@@ -1,5 +1,6 @@
 package br.com.fiap.fase6cap8.services;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -22,21 +23,30 @@ public class LancamentoService {
 		return dao.getById(id);
 	}
 
-	public void save(double vlLancamento, Date dtLancamento, String dsLancamento, 
-			TipoLancamento tipoLancamento, Usuario usuario, Conta conta, 
+	public void save(double vlLancamento, String dtLancamento, String dsLancamento, 
+//			TipoLancamento tipoLancamento, Usuario usuario, Conta conta, 
+			TipoLancamento tipoLancamento, Conta conta,
 			TipoInvestimento tipoInvestimento, Long id) {
 		Lancamento lancamento = new Lancamento();
 		if(id != null && id > 0) {
 			lancamento.setId(id);
 		}
-		lancamento.setVlLancamento(vlLancamento);
-		lancamento.setDtLancamento(dtLancamento);
-		lancamento.setDsLancamento(dsLancamento);
-		lancamento.setTipoLancamento(tipoLancamento);
-		lancamento.setTipoIvestimento(tipoInvestimento);
-		lancamento.setConta(conta);
-		lancamento.setUsuario(usuario);
-		dao.save(lancamento);
+		try {
+			Date dataLancamento = new SimpleDateFormat("dd/MM/yyyy").parse(dtLancamento);
+			lancamento.setVlLancamento(vlLancamento);
+			lancamento.setDtLancamento(dataLancamento);
+			lancamento.setDsLancamento(dsLancamento);
+			lancamento.setTipoLancamento(tipoLancamento);
+			if(tipoLancamento.getId() == 3) { // Investimento
+				lancamento.setTipoIvestimento(tipoInvestimento);
+			}
+			lancamento.setConta(conta);
+//			lancamento.setUsuario(usuario);
+			dao.save(lancamento);
+		} catch (Exception e) {
+			System.out.println("Erro na data do Lançamento. Formato de data aceito: dd/mm/yyyy");
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void delete(Long id) {

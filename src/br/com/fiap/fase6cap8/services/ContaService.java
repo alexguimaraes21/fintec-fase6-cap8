@@ -14,23 +14,24 @@ public class ContaService {
 		return dao.getAll();
 	}
 
-	public Conta getById(Long id) {
+	public Conta getById(long id) {
 		return dao.getById(id);
 	}
 
-	public void save(String vlAgencia, String vlConta, String vlBanco, Usuario usuario, Long id) {
+//	public void save(String vlAgencia, String vlConta, String vlBanco, Usuario usuario, Long id) {
+	public void save(String vlAgencia, String vlConta, String vlBanco, Long id) {
 		Conta conta = new Conta();
 		if(id != null && id > 0) {
 			conta.setId(id);
 		}
-		conta.setUsuario(usuario);
+//		conta.setUsuario(usuario);
 		conta.setVlAgencia(vlAgencia);
 		conta.setVlBanco(vlBanco);
 		conta.setVlConta(vlConta);
 		dao.save(conta);
 	}
 
-	public void delete(Long id) {
+	public void delete(long id) {
 		dao.delete(id);		
 	}
 

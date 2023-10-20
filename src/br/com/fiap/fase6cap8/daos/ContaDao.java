@@ -58,17 +58,19 @@ public class ContaDao implements ICrudDao<Conta> {
 		
 		String sql = "";
 		if(t.getId() != null && t.getId() > 0) {
-			sql = "UPDATE T_CONTA SET vl_agencia = ?, vl_conta = ?, vl_banco = ?, cd_usuario = ? WHERE cd_conta = ?";
+//			sql = "UPDATE T_CONTA SET vl_agencia = ?, vl_conta = ?, vl_banco = ?, cd_usuario = ? WHERE cd_conta = ?";
+			sql = "UPDATE T_CONTA SET vl_agencia = ?, vl_conta = ?, vl_banco = ? WHERE cd_conta = ?";
 		} else {
-			sql = "INSERT INTO T_CONTA (vl_agencia, vl_conta, vl_banco, cd_conta, cd_usuario) VALUES (?, ?, ?, ?, SEQ_CONTA.NEXTVAL)";
+//			sql = "INSERT INTO T_CONTA (vl_agencia, vl_conta, vl_banco, cd_usuario, cd_conta) VALUES (?, ?, ?, ?, SEQ_CONTA.NEXTVAL)";
+			sql = "INSERT INTO T_CONTA (vl_agencia, vl_conta, vl_banco, cd_conta) VALUES (?, ?, ?, SEQ_CONTA.NEXTVAL)";
 		}
 		try(PreparedStatement stmt = getConnection().prepareStatement(sql)) {
 			stmt.setString(1, t.getVlAgencia());
 			stmt.setString(2, t.getVlConta());
 			stmt.setString(3, t.getVlBanco());
-			stmt.setLong(4, t.getUsuario().getId());
+//			stmt.setLong(4, t.getUsuario().getId());
 			if(t.getId() != null && t.getId() > 0) {
-				stmt.setLong(5, t.getId());
+				stmt.setLong(4, t.getId());
 			} 
 			stmt.executeUpdate();
 		} catch (SQLException e) {
@@ -91,13 +93,13 @@ public class ContaDao implements ICrudDao<Conta> {
 	}
 	
 	private static Conta criarConta(ResultSet rs) throws SQLException {
-		UsuarioDao usuarioDao = new UsuarioDao();
+//		UsuarioDao usuarioDao = new UsuarioDao();
 		Conta conta = new Conta();
 		conta.setId(rs.getLong("cd_conta"));
 		conta.setVlAgencia(rs.getString("vl_agencia"));
 		conta.setVlConta(rs.getString("vl_conta"));
 		conta.setVlBanco(rs.getString("vl_banco"));
-		conta.setUsuario(usuarioDao.getById(rs.getLong("cd_usuario")));
+//		conta.setUsuario(usuarioDao.getById(rs.getLong("cd_usuario")));
 		return conta;
 	}
 	

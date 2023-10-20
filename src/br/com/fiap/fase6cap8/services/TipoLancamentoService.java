@@ -13,7 +13,7 @@ public class TipoLancamentoService {
 		return dao.getAll();
 	}
 
-	public TipoLancamento getById(Long id) {
+	public TipoLancamento getById(long id) {
 		return dao.getById(id);
 	}
 
@@ -26,7 +26,7 @@ public class TipoLancamentoService {
 		dao.save(tipoLancamento);
 	}
 
-	public void delete(Long id) {
+	public void delete(long id) {
 		dao.delete(id);		
 	}
 

@@ -13,7 +13,7 @@ public class TipoInvestimentoService {
 		return dao.getAll();
 	}
 
-	public TipoInvestimento getById(Long id) {
+	public TipoInvestimento getById(long id) {
 		return dao.getById(id);
 	}
 
@@ -28,7 +28,7 @@ public class TipoInvestimentoService {
 		dao.save(tipoInvestimento);
 	}
 
-	public void delete(Long id) {
+	public void delete(long id) {
 		dao.delete(id);		
 	}
 
