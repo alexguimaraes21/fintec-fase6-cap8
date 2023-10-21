@@ -19,28 +19,9 @@ public class Teste {
 
 	public static void main(String[] args) {
 		ContaService contaService = new ContaService();
-//		UsuarioService usuarioService = new UsuarioService();
 		TipoLancamentoService tipoLancamentoService = new TipoLancamentoService();
 		TipoInvestimentoService tipoInvestimentoService = new TipoInvestimentoService();
 		LancamentoService lancamentoService = new LancamentoService();
-		
-		/*
-		 * Cadastrando um novo Usuario
-		 */
-//		usuarioService.save("37877120036", "123mudar", "admin", true, null);
-//		usuarioService.save("12345678901", "789mudou", "usuario-teste", true, null);
-		
-		/*
-		 * Buscando o usuario com ID => 1
-		 */
-//		Usuario usuarioSelecionado = usuarioService.getById(1);
-//		System.out.println("## Buscando usuário com ID = 1 ##");
-//		if(usuarioSelecionado != null) {
-//			System.out.println("  Usuário ID: [ " + usuarioSelecionado.getId() + " ]");
-//			System.out.println("    Nome do usuário: " + usuarioSelecionado.getNmUsuario());
-//			System.out.println("    CPF do usuário: " + usuarioSelecionado.getVlCpf());
-//			System.out.println("    Usuário Ativo? " + (usuarioSelecionado.isCkUsuarioAtivo() ? "SIM" : "NÃO"));
-//		}
 		
 		/*
 		 * Cadastrando contas
@@ -114,45 +95,5 @@ public class Teste {
 		TipoInvestimento cdb = tipoInvestimentoService.getById(1);
 		TipoInvestimento tesouroDireto = tipoInvestimentoService.getById(2);
 		
-		/*
-		 * Cadastrando Lancamento
-		 */
-		System.out.println("## Cadastrando os Lançamentos ##");
-		lancamentoService.save(10000.00, "08/10/2023", "Pagamento - Cliente ABC", receita, contaSelecionada, null, null);
-		lancamentoService.save(5000.00, "09/10/2023", "Pagamento - Cliente DEF", receita, contaSelecionada, null, null);
-		lancamentoService.save(7349.18, "09/10/2023", "Pagamento - Cliente GEH", receita, contaSelecionada, null, null);
-		lancamentoService.save(500.00, "10/10/2023", "Investimento para Aposentadoria", investimento, contaSelecionada, tesouroDireto, null);
-		lancamentoService.save(250.00, "10/10/2023", "Investimento para Aposentadoria", investimento, contaSelecionada, cdb, null);
-		lancamentoService.save(231.13, "15/10/2023", "Conta de luz", despesa, contaSelecionada, null, null);
-		lancamentoService.save(1250.00, "20/10/2023", "Condomínio", despesa, contaSelecionada, null, null);
-		
-		System.out.println("## Listando todos os Lançamentos e os totais ##");
-		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		double totalReceita = 0.00;
-		double totalDespesa = 0.00;
-		double totalInvestimento = 0.00;
-		double saldoAtual = 0.00;
-		for (Lancamento lcto : lancamentoService.getAll()) {
-			System.out.println("  Lançamento ID [ " + lcto.getId() + " ]");
-			System.out.println("    Descrição: R$ " + lcto.getDsLancamento());
-			System.out.println("    Valor: R$ " + lcto.getVlLancamento());
-			System.out.println("    Data do Lançamento: " + dateFormat.format(lcto.getDtLancamento()));
-			System.out.println("    Tipo do Lançamento: " + lcto.getTipoLancamento().getDsTipo());
-			if (lcto.getTipoLancamento().getId() == 3) {
-				totalInvestimento += lcto.getVlLancamento();
-				System.out.println("    Carteira de Investimento: " + lcto.getTipoIvestimento().getDsTipoInvestimento());
-			} else if (lcto.getTipoLancamento().getId() == 2) {
-				totalReceita += lcto.getVlLancamento();
-			} else if (lcto.getTipoLancamento().getId() == 1) {
-				totalDespesa += lcto.getVlLancamento();
-			}
-		}
-		System.out.println("Total Investido: R$ " + totalInvestimento);
-		System.out.println("Total de Despesas: R$ " + totalDespesa);
-		System.out.println("Total de Receitas: R$ " + totalReceita);
-		saldoAtual = totalReceita;
-		saldoAtual -= totalDespesa;
-		saldoAtual -= totalInvestimento;
-		System.out.println("Saldo Atual R$ " + saldoAtual);
 	}
 }
